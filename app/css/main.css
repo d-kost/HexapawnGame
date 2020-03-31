@@ -1,5 +1,13 @@
 body {
-  font-family: Arial;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.5em;
+  color: #333333;
+  margin: 0 auto;
+  width: 80%;
+}
+
+.content {
+  display: flex;
 }
 
 #field td {
@@ -13,5 +21,9 @@ body {
 }
 
 .player {
-  background-color: green;
+  background-color: pink;
+}
+
+.winner_info {
+  margin-left: 50px;
 }

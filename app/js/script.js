@@ -1,6 +1,7 @@
 let player, computer, currentState;
 let savedPositions = [];
 
+
 function contentLoaded() {
     initGame();
     addEventsToPawn();
@@ -17,24 +18,38 @@ function initGame() {
     computer = [[0, 0], [0, 1], [0, 2]]
     
     currentState = {
-        step: 0,
+        _progress: 0,
         position : {
             player,
             computer
         },
-        history,
+        _winner: null,
+        history: [],
+
+        progressListener: function() {
+            onProgressChange(this.progress);
+        },
+        set progress(value) {
+            this._progress = value;
+            this.progressListener();
+        },
+        get progress() {
+            return this._progress;
+        },
+        set winner(value) {
+            this._winner = value;
+            processGame();
+        },
+        get winner() {
+            return this._winner;
+        }
     }
 
-    // let state = [['b', 'b', 'b'],
-    //             ['empty', 'empty', 'empty'],
-    //             ['g', 'g', 'g']]
-
-    // return state;
+    setWinnerMessage('');
+    
 }
 
 function newGameClick() {
-    console.log('dfsf');
-    
     initGame();
     redraw();
 }
@@ -60,10 +75,17 @@ function redraw() {
         }
         
     })
-    // console.log(field.rows[0].cells[1].classList.remove(''));
-    
+}
+
+function processGame() {
+    setWinnerMessage(currentState.winner);
 
 }
+
+function setWinnerMessage(winner) {
+    document.querySelector('#winner_message').textContent = winner;
+}
+
 
 function addEventsToPawn() {
     let pawns = document.querySelectorAll('.pawn');

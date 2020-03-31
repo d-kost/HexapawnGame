@@ -7,30 +7,41 @@
     <title>Table</title>
 </head>
 <body>
-    <h3>Hexapawn</h3>
+    <h2>Hexapawn</h2>
 
-    <table id="field">
-        <tr>
-            <td class="pawn"></td>
-            <td class="pawn"></td>
-            <td class="pawn"></td>
-        </tr>
-        <tr>
-            <td class="pawn"></td>
-            <td class="pawn"></td>
-            <td class="pawn"></td>
-        </tr>
-        <tr>
-            <td class="pawn"></td>
-            <td class="pawn"></td>
-            <td class="pawn"></td>
-        </tr>
-    </table>
+    <div class="content">
+        <table id="field">
+            <tr>
+                <td class="pawn"></td>
+                <td class="pawn"></td>
+                <td class="pawn"></td>
+            </tr>
+            <tr>
+                <td class="pawn"></td>
+                <td class="pawn"></td>
+                <td class="pawn"></td>
+            </tr>
+            <tr>
+                <td class="pawn"></td>
+                <td class="pawn"></td>
+                <td class="pawn"></td>
+            </tr>
+        </table>
+        
+        <div class="winner_info">
+            <p>Winner: <span id="winner_message"></span></p>
+        </div>
+
+        
+
+    </div>
+
 
     <button id="newGameBtn">New Game</button>
-    
+
     <script src="js/script.js"></script>
     <script src="js/computer_actions.js"></script>
     <script src="js/player_actions.js"></script>
+    <script src="js/process_progress.js"></script>
 </body>
 </html>

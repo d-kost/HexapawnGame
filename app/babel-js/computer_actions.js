@@ -1,13 +1,11 @@
 'use strict';
 
-function makeComputerStep() {
+function makeComputerStep(availableSteps) {
 
-    // if (!savedPositions.includes(currentState)){ //переделать
     var saved = getSavedPosition();
-    console.log('saved', saved);
     if (!saved) {
-        var steps = getAvailableSteps();
-        //if steps is empty => player win
+        var steps = availableSteps;
+        // const steps = getAvailableSteps();
 
         var stateArray = getStateArray();
         saved = {
@@ -18,11 +16,15 @@ function makeComputerStep() {
             losingSteps: []
         };
         savedPositions.push(saved);
-        console.log('steps', saved.steps);
+        // console.log('steps', saved.steps);
     }
 
+    // if (saved.steps.length != 0) 
     var randomStepIndex = Math.floor(Math.random() * saved.steps.length);
+    console.log('length 34354', saved.steps.length); //when 0 program crash
+
     changePosition(saved.steps[randomStepIndex]);
+    currentState.progress += 1;
     redraw();
 }
 
@@ -50,29 +52,23 @@ function getSavedPosition() {
         return saved.stateArray == currentStateArray;
     });
 
-    console.log('saved f', saved);
     if (saved.length == 0) {
         return null;
     } else {
         return saved[0];
     }
-
-    // let saved = savedPositions.filter( saved => saved.position == currentPos);
-    // if (saved.length == 0) {
-    //     return null
-    // } else {
-    //     return saved[0]
-    // }
 }
 
-function getAvailableSteps() {
+function getAvailableSteps(currentArray, flag) {
     var result = [];
     var stateArray = getStateArray();
 
-    currentState.position.computer.forEach(function (pos) {
-        // if (pos[0] != null && pos[1] != null) {
+    currentArray.forEach(function (pos) {
         var players = ['c', 'p'];
-        var row_forward = pos[0] + 1;
+
+        var row_forward = flag == 'c' ? pos[0] + 1 : pos[0] - 1;
+        var diagonal_flag = flag == 'c' ? 'p' : 'c';
+
         var column_forward = pos[1] + 1;
         var column_back = pos[1] - 1;
 
@@ -88,16 +84,15 @@ function getAvailableSteps() {
                 });
             }
             //check cells diagonally
-            checkDiagonal(array_row_forward, column_forward, pos);
-            checkDiagonal(array_row_forward, column_back, pos);
+            checkDiagonal(array_row_forward, column_forward, pos, diagonal_flag);
+            checkDiagonal(array_row_forward, column_back, pos, diagonal_flag);
         }
-        // }
     });
 
     return result;
 
-    function checkDiagonal(array, col, pos) {
-        if (array[col] && array[col] == 'p') {
+    function checkDiagonal(array, col, pos, flag) {
+        if (array[col] && array[col] == flag) {
             result.push({
                 row: pos[0],
                 column: pos[1],
@@ -111,15 +106,11 @@ function getAvailableSteps() {
 function getStateArray() {
     var result = [[], [], []];
     currentState.position.computer.forEach(function (pos) {
-        // if (pos[0] != null && pos[1] != null) {
         result[pos[0]][pos[1]] = 'c';
-        // }
     });
 
     currentState.position.player.forEach(function (pos) {
-        // if (pos[0] != null && pos[1] != null) {
         result[pos[0]][pos[1]] = 'p';
-        // }      
     });
     return result;
 }
