@@ -7,12 +7,16 @@ body
 
 .content
     display: flex
+    padding-bottom: 20px
     
 #field
     td
         width: 50px
         height: 50px
-        border: 1px solid black
+        border: 1px solid #595959
+        cursor: pointer
+        &:focus
+            outline: pink outset 3px
 
 .computer
     background-color: black
@@ -22,3 +26,15 @@ body
 
 .winner_info
     margin-left: 50px
+
+#newGameBtn
+    cursor: pointer
+    padding: 10px 20px
+    font-weight: 600
+    background-color: pink
+    border: 1px solid #717171
+    border-radius: 5px
+    /* border: none; */
+    outline: none
+    &:active
+        background-color: darken(pink, 5%)

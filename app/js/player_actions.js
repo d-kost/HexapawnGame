@@ -8,7 +8,12 @@ function makePlayerStep() {
         row = e.target.parentNode.rowIndex;
 
         if (currentState.winner == null) {
-            if (pressed) {
+            if (clickPlayerPawn(row, column)) {
+                //player begin step
+                pressed = true;
+                prevColumn = e.target.cellIndex;
+                prevRow = e.target.parentNode.rowIndex;
+            } else if (pressed) {
                 //if click in available steps
                 if (canPlayerStep(row, column, prevRow, prevColumn)) {
                     redraw();
@@ -19,12 +24,11 @@ function makePlayerStep() {
                 prevRow = null;
     
     
-            } else if (!pressed && clickPlayerPawn(row, column)) {
-                pressed = true;
-                prevColumn = e.target.cellIndex;
-                prevRow = e.target.parentNode.rowIndex;
+            } else {
+                pressed = false;
+                prevColumn = null;
+                prevRow = null;
     
-                console.log('player begin step'); 
             }
         }
     }
@@ -34,13 +38,13 @@ function canPlayerStep(row, column, prevRow, prevColumn) {
     let result = false;
     
     if (prevColumn == column && prevRow - row == 1) {
-        //клик на клетку вперед
+        //click on cell in front
         if (!currentState.position.computer.find(pos => pos[0] == row && pos[1] == column)) {
-            //если впереди клетка пустая
+            //if cell is empty
             currentState.position.player = currentState.position.player.map( pos => {
                 if (pos[0] == prevRow && pos[1] == prevColumn) {
+                    //player move forward
                     result = true;
-                    console.log('player move forward');
                     return [row, column];
                 }
                 return [pos[0], pos[1]];
@@ -52,7 +56,6 @@ function canPlayerStep(row, column, prevRow, prevColumn) {
         currentState.position.computer = currentState.position.computer.filter( pos => {
             if (pos[0] == row && pos[1] == column) {
                 result = true;
-                console.log('player step on computer');
                 //rewrite player if click was on computer
                 currentState.position.player = currentState.position.player.map( playerPos => {
                     if (playerPos[0] == prevRow && playerPos[1] == prevColumn) {

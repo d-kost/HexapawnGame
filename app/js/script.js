@@ -55,7 +55,7 @@ function newGameClick() {
 }
 
 function redraw() {
-    pos = currentState.position;
+    let pos = currentState.position;
     let field = document.querySelector('#field');
     Array.from(field.rows).forEach(row => {
         Array.from(row.cells).forEach( cell => {    
@@ -80,6 +80,26 @@ function redraw() {
 function processGame() {
     setWinnerMessage(currentState.winner);
 
+    currentState.history.forEach(record => {
+        for (let i = 0; i < savedPositions.length; i++) {      
+            if (savedPositions[i].stateArray == record.position) {
+                if (currentState.winner == getWinnerConst().computer) {
+                    savedPositions[i].steps = savedPositions[i].steps.filter(step => step == record.chosenStep);      
+                    break;
+                } else {
+                    savedPositions[i].steps = savedPositions[i].steps.filter(step => step != record.chosenStep);
+                    break;
+                }
+            }
+        }
+    })
+}
+
+function getWinnerConst() {
+    return {
+        player: 'player',
+        computer: 'computer'
+    }
 }
 
 function setWinnerMessage(winner) {

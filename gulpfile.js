@@ -18,7 +18,7 @@ function css(){
 
 function scripts() {
     return gulp.src('app/js/**/*.js')
-        //.pipe(concat('main.js'))
+        .pipe(concat('main.js'))
         .pipe(babel({
             presets: ['babel-preset-env']
         }))

@@ -1,7 +1,6 @@
 function onProgressChange(currentProgress) {
     //check win
     let [winner, availableSteps] = checkWin(currentProgress);
-    // console.log('winner', winner);
     if (winner) {
         currentState.winner = winner;
     } else {
@@ -14,10 +13,7 @@ function onProgressChange(currentProgress) {
 
 function checkWin(progress) {
     //function return false or [winner, array of available steps or null]
-    const winner = {
-        player: 'player',
-        computer: 'computer'
-    }
+    const winner = getWinnerConst();
     //1. if on enemy side
     let enemySideResult = onEnemySide(progress, winner);
     if (enemySideResult) {
@@ -89,6 +85,50 @@ function checkAvailableSteps(progress, winner) {
         } else {
             let winner = flag == 'c' ? winner_param.player : winner_param.computer;
             result = [winner, null];
+        }
+    }
+}
+
+function getAvailableSteps(currentArray, flag) {
+    let result = [];
+    let stateArray = getStateArray();
+    
+    currentArray.forEach(pos => {
+        const players = ['c', 'p'];
+
+        const row_forward = flag == 'c' ? pos[0]+1 : pos[0]-1;
+        const diagonal_flag = flag == 'c' ? 'p' : 'c';
+    
+        const column_forward = pos[1]+1;
+        const column_back = pos[1]-1;
+
+        const array_row_forward = stateArray[row_forward];
+        if (array_row_forward) {
+            //check cell in front
+            if (!players.includes(array_row_forward[pos[1]])) {
+                result.push({
+                    row: pos[0],
+                    column: pos[1],
+                    dest_row: row_forward,
+                    dest_column: pos[1]
+                })
+            }
+            //check cells diagonally
+            checkDiagonal(array_row_forward, column_forward, pos, diagonal_flag);
+            checkDiagonal(array_row_forward, column_back, pos, diagonal_flag);
+        }
+    })
+
+    return result;
+
+    function checkDiagonal(array, col, pos, flag) {
+        if (array[col] && array[col] == flag) {
+            result.push({
+                row: pos[0],
+                column: pos[1],
+                dest_row: pos[0]+1,
+                dest_column: col
+            })
         }
     }
 }
